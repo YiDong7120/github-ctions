@@ -1,0 +1,26 @@
+on:
+    push:
+        branches:
+            - main
+
+name: Name replacer
+jobs:
+    replacer:
+        name: Name Replacer
+        runs-on: ubuntu-latest
+        steps:
+            - name: Code Checkout
+              uses: actions/checkout@v3
+
+            - run: sed -i "s/new-text/old-text/g" input.txt
+            - name: Commit changes
+              id: commit-changes
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                commit_message: "Automatic commit"
+            - name: Create or update comment
+              uses: peter-evans/create-or-update-comment@v3
+              with:
+                issue-number: 1
+                body: |
+                    There is a CI Commit! 🥳
